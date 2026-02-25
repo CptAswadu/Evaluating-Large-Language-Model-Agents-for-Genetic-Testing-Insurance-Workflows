@@ -1,6 +1,6 @@
 # Evaluating LLM Agents for Genetic Testing Insurance Workflows 
 
-## This repository is a standalone export of ```bash RESCUE-n8n/eval/insurance``` (insurance_agent branch) for reproducibility.
+## This repository is a standalone export of ```RESCUE-n8n/eval/insurance``` (insurance_agent branch from https://github.com/stormliucong/RESCUE-n8n/tree/main/eval/insurance) for reproducibility.
 
 📁 This folder contains the source codes, experimental outputs, and evaluation files associated with our study: **Evaluating Large Language Model Agents for Genetic Testing Insurance Workflows: An End-to-End Assessment of Retrieval and Reliability**.
 
