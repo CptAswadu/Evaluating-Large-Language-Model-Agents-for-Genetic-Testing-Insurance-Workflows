@@ -35,38 +35,38 @@ Instead, it consumes previously generated patient–policy matching results and 
 
 From the repository root:
 ```bash
-cd eval/insurance/codes
+cd codes
 ```
 
 ### 1️⃣ In-network provider retrieval
 ```bash
-name_retrieval/experiment.py
+python name_retrieval/experiment.py
 ```
 
 ### 2️⃣ Policy document retrieval
 ```bash
-policy_retrieval/experiment.py
+python policy_retrieval/experiment.py
 ```
 
 ### 3️⃣ Patient–policy matching
 SentenceTransformer (header input):
 ```bash
-patient_policy_match/header_execute.py
+python patient_policy_match/header_execute.py
 ```
 
 SentenceTransformer (whole-policy input):
 ```bash
-patient_policy_match/whole_policy_execute.py
+python patient_policy_match/whole_policy_execute.py
 ```
 
 OpenAI embedding (text-embedding-3-small):
 ```bash
-patient_policy_match/policy_openai.py
+python patient_policy_match/policy_openai.py
 ```
 
 ### 4️⃣ LLM QA (used in manuscript)
 ```bash
-rag_qna/openai_embedding.py
+python rag_qna/openai_embedding.py
 ```
 
 ---

@@ -1,5 +1,7 @@
 # Evaluating LLM Agents for Genetic Testing Insurance Workflows 
 
+## This repository is a standalone export of ```bash RESCUE-n8n/eval/insurance``` (insurance_agent branch) for reproducibility.
+
 📁 This folder contains the source codes, experimental outputs, and evaluation files associated with our study: **Evaluating Large Language Model Agents for Genetic Testing Insurance Workflows: An End-to-End Assessment of Retrieval and Reliability**.
 
 ---
@@ -14,22 +16,16 @@
 ## Installation
 1. Clone the repository
 ```bash
-git clone https://github.com/stormliucong/RESCUE-n8n.git 
-cd RESCUE-n8n/eval/insurance
+git clone https://github.com/CptAswadu/Evaluating-Large-Language-Model-Agents-for-Genetic-Testing-Insurance-Workflows.git
+cd Evaluating-Large-Language-Model-Agents-for-Genetic-Testing-Insurance-Workflows
 ```
 
-2. Create environment
-```bash
-conda create -n insurance_agent python=3.10 -y
-conda activate insurance_agent
-```
-
-3. Install dependencies
+2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Set API Keys
+3. Set API Keys
 Create a `.env` file in the project root:
 
 ```bash
@@ -87,7 +83,7 @@ The goal is to quantify retrieval sensitivity, ranking robustness, and downstrea
 
 This project supports the manuscript titled:
 
-**"Evaluating Large Language Model Agents for Genetic Testing Insurance Workflows An End-to-End Assessment of Retrieval and Reliability"**
+**"Evaluating Large Language Model Agents for Genetic Testing Insurance Workflows: An End-to-End Assessment of Retrieval and Reliability"**
 
 Key contributions:
 - Evaluation of real-time LLM-based retrieval
