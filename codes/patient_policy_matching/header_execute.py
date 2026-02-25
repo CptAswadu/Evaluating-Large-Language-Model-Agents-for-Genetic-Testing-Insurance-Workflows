@@ -5,11 +5,11 @@ os.environ["HF_HUB_OFFLINE"] = "1"
 from dotenv import load_dotenv
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer
-from eval.insurance.codes.patient_policy_matching.load_policy import load_policies, calculate_pdf_md5
+from load_policy import load_policies, calculate_pdf_md5
 from embedding_policies import embed_policies_from_headers
 from retrieve_candidates import retrieve_candidates, cosine_topk
 from rerank_policies import rerank_policies
-from eval.insurance.codes.patient_policy_matching.md5_matching import md5_match_by_rerank_order
+from md5_matching import md5_match_by_rerank_order
 from run_retrieval import run_retrieval_evaluation
 from run_retrieval_whole import run_retrieval_evaluation_whole
 

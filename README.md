@@ -22,6 +22,8 @@ cd Evaluating-Large-Language-Model-Agents-for-Genetic-Testing-Insurance-Workflow
 
 2. Install dependencies
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
