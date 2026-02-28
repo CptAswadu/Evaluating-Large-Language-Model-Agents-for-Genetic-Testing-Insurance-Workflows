@@ -45,7 +45,7 @@ We assess performance across four sequential tasks:
 
 1. **In-Network Insurance Provider Retrieval** 
 2. **Policy Document Retrieval**
-3. **Patient-Policy Matching**
+3. **Patient-Policy match**
 4. **LLM Agent for Answering Relevant Questions**
 
 The goal is to quantify retrieval sensitivity, ranking robustness, and downstream decision accuracy.
@@ -73,7 +73,7 @@ The goal is to quantify retrieval sensitivity, ranking robustness, and downstrea
    - Task: Retrieve official genetic testing policy documents (PDFs or web pages).  
    - Output: Structured JSON with `pdf_links` and `webpage_links`.
 
-3. **Patient-Policy Matching**  
+3. **Patient-Policy match**  
    - Task: Given a patient-specific information, retrieve the best policy utlizing RAG.  
    - Output: Rank, policy name
 

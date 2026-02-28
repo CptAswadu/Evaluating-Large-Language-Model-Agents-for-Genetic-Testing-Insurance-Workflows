@@ -3,11 +3,11 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer
-from codes.patient_policy_matching.load_policy import load_policies
-from codes.patient_policy_matching.embedding_policies import embed_policies_from_headers
-from codes.patient_policy_matching.retrieve_candidates import retrieve_candidates
-from codes.patient_policy_matching.rerank_policies import rerank_policies
-from codes.patient_policy_matching.md5_matching import md5_match_by_rerank_order
+from codes.patient_policy_match.load_policy import load_policies
+from codes.patient_policy_match.embedding_policies import embed_policies_from_headers
+from codes.patient_policy_match.retrieve_candidates import retrieve_candidates
+from codes.patient_policy_match.rerank_policies import rerank_policies
+from codes.patient_policy_match.md5_matching import md5_match_by_rerank_order
 from load_cases import load_matched_cases
 from run_qna import run_qna, clean_json_response, format_questions, build_cached_prefix, build_qna_input_cached
 import batch_qna_utils

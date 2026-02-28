@@ -23,13 +23,13 @@ Final validated ground-truth annotations used for patient-policy matching and QA
 Initial downsampling version of the ground truth.
 
 ### 🔹 filtered_llm_samples.json
-LLM-generated samples based on filtered_ground_truth.
+LLM-generated synthetic patient narrative samples based on filtered_ground_truth.
 
 ---
 
 ## 🧬 Patient Case Datasets
 
-### 🔹 Insurance_Genetic_Testing_QA.json
+### 🔹 Insurance_Genetic_Testing_QA_Updated.json
 Structured evaluation schema defining the nine-question (Q0–Q8) framework used for policy-grounded insurance coverage assessment.
 
 This file specifies:
@@ -38,6 +38,10 @@ This file specifies:
 - Standardized answer options for each question
 
 It serves as the evaluation template for structured QA experiments.
+
+### 🔹 qna_free_text_sample.json
+Final synthetic patient narratives used for patient-policy matching and QA experiment.
+
 
 ---
 
