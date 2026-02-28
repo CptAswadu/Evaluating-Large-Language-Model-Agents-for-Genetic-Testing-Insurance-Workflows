@@ -4,6 +4,16 @@ This folder contains structured evaluation datasets used in the LLM-based insura
 
 ⚠️ Insurance policy documents used for embedding and retrieval experiments are not included in this repository.
 
+---
+
+## 🔁 Reproducibility Notes for Dataset Files
+
+- All ground-truth mappings correspond to the policy snapshot available at the time of study.
+- Insurance policy documents are publicly available but are not redistributed in this repository.
+- MD5-based verification files (`policy_md5.csv`, `policy_retrieval_md5.csv`) ensure document identity consistency during retrieval evaluation.
+- QA document-conditioning files (e.g., `match_qa.csv`) must be generated after running the Patient–Policy Matching task.
+- No protected health information (PHI) is included.
+
 The files in this folder support two core evaluation components:
 
 1. **Payer Identification**
@@ -17,7 +27,7 @@ The files in this folder support two core evaluation components:
 ## 📊 Core Evaluation Datasets
 
 ### 🔹 final_ground_truth.json
-Final validated ground-truth annotations used for patient-policy matching and QA evaluation.
+Final validated ground-truth annotations used for patient-policy match and LLM insurance QA evaluation.
 
 ### 🔹 filtered_ground_truth.json
 Initial downsampling version of the ground truth.
@@ -40,8 +50,7 @@ This file specifies:
 It serves as the evaluation template for structured QA experiments.
 
 ### 🔹 qna_free_text_sample.json
-Final synthetic patient narratives used for patient-policy matching and QA experiment.
-
+Final synthetic patient narratives used for patient-policy match and LLM insurance QA experiment.
 
 ---
 
@@ -51,6 +60,19 @@ Final synthetic patient narratives used for patient-policy matching and QA exper
 Curated list of in-network insurance providers for GeneDx.
 
 Used as a ground-truth for benchmarking name retrieval accuracy.
+
+---
+
+## 📑 Policy document information
+
+### 🔹 policy_md5.csv
+Contains file name and md5 information for all policy documents.
+
+### 🔹 policy_retrieval_md5.csv
+Contains the initial ground-truth records for the policy document retrieval task, including payer name, file name, and MD5 hash information. For Aetna, HTML content information is provided instead of an MD5 hash.
+
+### 🔹 match_qa.csv
+Contains document assignment information for each synthetic case, including case_id, payer, genetic_test, file name, and MD5 hash. This file is used for both the Patient–Policy Match and the LLM insurance QA tasks.
 
 ---
 
@@ -93,8 +115,3 @@ The merged datasets serve as canonical master tables used for:
 - Structured Q0–Q8 ground-truth construction
 
 ---
-
-## ⚠️ Notes
-
-- Policy documents are publicly available insurer documents.
-- No protected health information (PHI) is included.

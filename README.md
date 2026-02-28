@@ -6,11 +6,15 @@
 
 ---
 
-## Requirements
+## Requirements & Reproducibility Notes
 - Python 3.10+
 - OpenAI API key
 - Perplexity API key
+- SentenceTransformer model (all-MiniLM-L6-v2)
+- OpenAI text-embedding-3-small
+- Publicly available insurance policy documents (see below section)
 
+⚠️ Due to policy version updates over time, retrieval results may differ slightly if policies have been modified after the study period.
 ---
 
 ## Installation
@@ -45,7 +49,7 @@ We assess performance across four sequential tasks:
 
 1. **In-Network Insurance Provider Retrieval** 
 2. **Policy Document Retrieval**
-3. **Patient-Policy match**
+3. **Patient-Policy Match**
 4. **LLM Agent for Answering Relevant Questions**
 
 The goal is to quantify retrieval sensitivity, ranking robustness, and downstream decision accuracy.
@@ -65,24 +69,78 @@ The goal is to quantify retrieval sensitivity, ranking robustness, and downstrea
 ## 🧪 Experimental Tasks
 
 1. **In-Network Provider Retrieval**  
-   - Task: Identify insurance companies that are in-network with GeneDx.  
-   - Input: Prompted queries via ChatGPT and Perplexity.  
-   - Output: JSON list of providers → Compared with `In-Network_providers_Update.csv`.
+- Objective: Evaluate whether LLM agents can correctly identify GeneDx in-network payers.  
+- Input: Prompt-based queries (model × prompt × iteration).  
+- Ground Truth: `dataset/In-Network_Providers_Update.csv`  
+- Output: `results/name_retrieval/`  
+- Evaluation: GPT-4o-based matching and computation ('codes/name_retrieval/execute_analysis.py').
+
 
 2. **Policy Document Retrieval**  
-   - Task: Retrieve official genetic testing policy documents (PDFs or web pages).  
-   - Output: Structured JSON with `pdf_links` and `webpage_links`.
+- Objective: Assess whether LLM agents retrieve the correct genetic testing coverage policies.  
+- Input: Insurance provider name + prompt configuration.  
+- Output: Retrieved policy documents (PDF/HTML) + MD5 verification results.  
+- Output Location: `results/policy_retrieval/`  
+- Evaluation: MD5-based ground-truth comparison ('codes/policy_retrieval/assess.py').
 
 3. **Patient-Policy match**  
-   - Task: Given a patient-specific information, retrieve the best policy utlizing RAG.  
-   - Output: Rank, policy name
+- Objective: Retrieve the most relevant policy document for a given synthetic patient case.  
+- Input: Synthetic patient case + policy embedding corpus (789 policies).  
+- Output: Ranked policy candidates (Top-K) + reranking artifacts.  
+- Output Location: `results/patient_policy_match/`  
+- Evaluation: Match rate and reranking analysis ('codes/analysis_figures/match_rate_analysis.ipynb').
+
 
 4. **LLM Agent for Answering Relevant Questions**  
-   - Task: Given a policy document and patient-specific information, answer key insurance-related questions.  
-   - Examples: Will the test be approved? Is pre-authorization required? Is the age criteria meet?  
-   - Output: Answer with a brief reasoning.
+- Objective: Evaluate downstream insurance QA accuracy under document conditioning.  
+- Input: Patient case ± policy document.  
+- Settings:
+  - Baseline (no document)
+  - All-Correct (ground-truth document)
+  - All-Incorrect (high-similarity incorrect document)
+- Output Location: `results/LLM_QnA/`
+- Evaluation: Accuracy, Adjusted_Accuracy, case-level statistical analysis between settings, question-wise statistical analysis ('codes/analysis_figures/Analysis.ipynb').
+
+⚠️ The **LLM Agent for Answering Relevant Questions** task depends on the outputs of the  **Patient–Policy Matching** task when running document-conditioned settings  (matched, unmatched, all_correct, all_incorrect).
+
+Therefore, the Patient–Policy Matching task must be executed first 
+to generate the required policy-document assignments.
+
+The **Baseline** setting (patient narrative only, without policy documents) can be executed independently.
 ---
 
+## 📄 Insurance Policy Documents
+
+A total of 789 publicly available genetic testing policy documents  were used for embedding and retrieval experiments.
+
+These documents are not redistributed in this repository 
+due to size and licensing considerations.
+
+All policy documents are publicly accessible via the official payer websites:
+- Aetna
+- Blue Cross Blue Shield Federal Employee Program (BCBS FEP)
+- Cigna
+- United Healthcare
+
+The experiments were conducted using the policy snapshot available at the time of study.
+
+To reproduce embedding-based experiments:
+1. Download the relevant genetic testing policies from payer websites.
+2. Place them under a local directory.
+
+Ground-truth md5 mappings between synthetic cases and policy documents
+are provided in `dataset/final_ground_truth.json`.
+
+---
+
+## 📊 Evaluation Datasets
+
+All evaluation datasets are located in the `dataset/` folder
+- 'In-Network_Providers_Update.csv' for **In-Network Provider Retrieval** task
+- 'qna_free_text_sample.json' for patient narrative samples for **Patient-Policy match** and **LLM Agent for Answering Relevant Questions** tasks
+- 'final_ground_truth.json' contains evaluation ground truth answer for **Patient-Policy match** and **LLM Agent for Answering Relevant Questions** tasks
+
+---
 ## 📘 Related Manuscript
 
 This project supports the manuscript titled:
