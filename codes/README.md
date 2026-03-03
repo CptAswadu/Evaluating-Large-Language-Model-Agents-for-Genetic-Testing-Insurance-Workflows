@@ -5,6 +5,8 @@ This directory contains modular implementations of the experimental components u
 Each task is executed via a dedicated entry script.  
 All other Python files within each module serve as internal utilities (data loading, parsing, scoring, aggregation, etc.).
 
+For policy retrieval task assessment, patient-policy match and QA task with document settings please store policy document first and set the directory.
+
 ---
 
 ## 🔹 Entry Scripts (One per Task)
@@ -39,16 +41,28 @@ cd codes
 ```
 
 ### 1️⃣ In-network provider retrieval
+Experiment
 ```bash
 python name_retrieval/experiment.py
+```
+Assessment
+```bash
+python name_retrieval/execute_analysis.py
 ```
 
 ### 2️⃣ Policy document retrieval
 ```bash
 python policy_retrieval/experiment.py
 ```
+Assessment
+```bash
+python policy_retrieval/assess.py
+```
+Please store policy documents first and set the directory.
 
 ### 3️⃣ Patient–policy matching
+Experiment and Assessment
+
 SentenceTransformer (header input):
 ```bash
 python patient_policy_match/header_execute.py
@@ -63,12 +77,24 @@ OpenAI embedding (text-embedding-3-small):
 ```bash
 python patient_policy_match/policy_openai.py
 ```
+Please store policy documents first and set the directory.
+Each file contains both experiment and assessment.
 
 ### 4️⃣ LLM QA (used in manuscript)
+Experiment
 ```bash
 python rag_qna/openai_embedding.py
 ```
+Assessment
+1. Aggregate results
+```bash
+python rag_qna/aggregate.py
+```
 
+2. Calculate accuracy
+```bash
+python rag_qna/final_accuracy_caluclation.py
+```
 ---
 
 ## 🔹 Module Overview

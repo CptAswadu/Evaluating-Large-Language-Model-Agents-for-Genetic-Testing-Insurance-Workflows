@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import json
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 os.environ["HF_HUB_OFFLINE"] = "1"
 from dotenv import load_dotenv
@@ -14,23 +15,48 @@ from run_retrieval_whole import run_retrieval_evaluation_whole
 
 
 def main():
-    DOTENV_PATH = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+    TEST_MODE = True
+    TEST_CASE_ID = "Case10917"
+
+    DOTENV_PATH = '../'
     load_dotenv(dotenv_path=os.path.join(DOTENV_PATH, ".env"))
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
     
-    BASE_DIR = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/dataset"
+    BASE_DIR = "../dataset"
     DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
     POLICY_FOLDER = f"{BASE_DIR}/insurance_policy"
 
-    K_RETRIEVAL_HEADER = [10, 30]
-    K_RETRIEVAL_POLICY = [10]
-    K_RERANK_LIST = [1, 3]
     RETRIEVAL_MODELS = ["gpt-5-mini"]
     EMBEDDER = "text-embedding-3-small"
-    RESULTS_BASE = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/patient_policy_match"
+    RESULTS_BASE = "../results/patient_policy_match"
 
+    if TEST_MODE:
+        # only run the retrieval and reranking for a specific test case, to verify the correctness of the pipeline and debug if necessary
+        K_RETRIEVAL_HEADER = [10]
+        K_RERANK_LIST = [1]
+        K_RETRIEVAL_POLICY = [10]
+    else:
+        # whole experiment parameters
+        K_RETRIEVAL_HEADER = [10, 30]
+        K_RERANK_LIST = [1, 3]
+        K_RETRIEVAL_POLICY = [10]
+
+    if TEST_MODE:
+        with open(DATASET_PATH, "r", encoding="utf-8") as f:
+            full_dataset = json.load(f)
+
+        test_dataset = [c for c in full_dataset if str(c["id"]) == TEST_CASE_ID]
+        TEST_DATASET_PATH = f"{BASE_DIR}/_test_single_case.json"
+
+        with open(TEST_DATASET_PATH, "w", encoding="utf-8") as f:
+            json.dump(test_dataset, f, indent=2, ensure_ascii=False)
+
+        print(f"TEST MODE: Using single case {TEST_CASE_ID}")
+    else:
+        TEST_DATASET_PATH = DATASET_PATH
+    
     print("Loading policies...")
     policies, md5s, headers = load_policies(POLICY_FOLDER)
 
@@ -52,7 +78,7 @@ def main():
             os.makedirs(f"{SAVE_BASE_DIR}/retrieval", exist_ok=True)
 
             results = run_retrieval_evaluation(
-                dataset_path=DATASET_PATH,
+                dataset_path=TEST_DATASET_PATH,
                 base_dir=SAVE_BASE_DIR,
                 embedding_matrix=embedding_matrix_header,
                 doc_names=doc_names_header,
@@ -80,7 +106,7 @@ def main():
             os.makedirs(f"{SAVE_BASE_DIR}/retrieval", exist_ok=True)
 
             results = run_retrieval_evaluation_whole(
-                dataset_path=DATASET_PATH,
+                dataset_path=TEST_DATASET_PATH,
                 base_dir=SAVE_BASE_DIR,
                 embedding_matrix=embedding_matrix_policy,
                 doc_names=doc_names_policy,

@@ -165,7 +165,7 @@ def save_experiment_csvs(df, base_path):
             group.to_csv(save_path, index=False)
             print(f"Saved {save_path}: {len(group)} rows")
 
-def aggregate_all_results(base_path="/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/LLM_QnA/RAG/final/final_qna_results"):
+def aggregate_all_results(base_path="../results/LLM_QnA/RAG/final/final_qna_results"):
     """
     Main function: aggregate all results into CSVs
     """

@@ -12,18 +12,42 @@ from retrieve_candidates import retrieve_candidates
 from run_retrieval_whole import run_retrieval_evaluation_whole
 
 def main():
-    DOTENV_PATH = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+    TEST_MODE = True
+    TEST_CASE_ID = "Case10917"
+
+    DOTENV_PATH = '../'
     load_dotenv(dotenv_path=os.path.join(DOTENV_PATH, ".env"))
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
-
-    BASE_DIR = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/dataset"
+    # set the directory paths for dataset and results
+    BASE_DIR = "../dataset"
     DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
     POLICY_FOLDER = f"{BASE_DIR}/insurance_policy"
 
-    save_dir = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/patient_policy_match/whole_policy"
+    save_dir = "../results/patient_policy_match/whole_policy"
     os.makedirs(save_dir, exist_ok=True)
+
+    if TEST_MODE:
+        # only run the retrieval and reranking for a specific test case, to verify the correctness of the pipeline and debug if necessary
+        K_RERANK_LIST = [1]
+    else:
+        # whole experiment parameters
+        K_RERANK_LIST = [1, 3]
+
+    if TEST_MODE:
+        with open(DATASET_PATH, "r", encoding="utf-8") as f:
+            full_dataset = json.load(f)
+
+        test_dataset = [c for c in full_dataset if str(c["id"]) == TEST_CASE_ID]
+        TEST_DATASET_PATH = f"{BASE_DIR}/_test_single_case.json"
+
+        with open(TEST_DATASET_PATH, "w", encoding="utf-8") as f:
+            json.dump(test_dataset, f, indent=2, ensure_ascii=False)
+
+        print(f"TEST MODE: Using single case {TEST_CASE_ID}")
+    else:
+        TEST_DATASET_PATH = DATASET_PATH
 
     policies, md5s, headers = load_policies(POLICY_FOLDER)
 
@@ -35,8 +59,9 @@ def main():
         cache_suffix="whole_policy"
     )
 
+    # only 10 policies for reranking possible, since the whole policy text is much longer than header
     run_retrieval_evaluation_whole(
-        dataset_path=DATASET_PATH,
+        dataset_path=TEST_DATASET_PATH,
         base_dir=save_dir,
         embedding_matrix=embedding_matrix,
         doc_names=doc_names,
@@ -45,7 +70,7 @@ def main():
         openai_client=chatgpt_agent, 
         perplexity_api_key=perplexity_api_key,
         llm_models=['gpt-5-mini'],
-        top_k_values= [1, 3],
+        top_k_values= K_RERANK_LIST,
         k_retrieval=10,
         embedder_id="all-MiniLM-L6-v2"
     )

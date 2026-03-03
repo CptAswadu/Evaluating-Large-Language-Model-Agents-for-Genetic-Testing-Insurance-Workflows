@@ -157,9 +157,10 @@ def calculate_accuracy(results_csv_path, ground_truth_json_path, output_csv_path
 
 # Main execution
 if __name__ == "__main__":
-    results_csv = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/LLM_QnA/RAG/final/final_qna_results/final_all_results_combined.csv"
-    ground_truth_json = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/dataset/final_ground_truth.json"
-    output_csv = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/LLM_QnA/RAG/final/final_qna_results/final_results_with_accuracy_updated.csv"
+    # set the directory paths for results and ground truth
+    results_csv = "../results/LLM_QnA/RAG/final/final_qna_results/final_all_results_combined.csv"
+    ground_truth_json = "../dataset/final_ground_truth.json"
+    output_csv = "../results/LLM_QnA/RAG/final/final_qna_results/final_results_with_accuracy_updated.csv"
     
     df = calculate_accuracy(results_csv, ground_truth_json, output_csv)
     

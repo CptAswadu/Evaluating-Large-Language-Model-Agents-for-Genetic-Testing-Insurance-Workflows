@@ -1,7 +1,7 @@
 import os, json
 
 USE_BATCH_QNA = True
-BATCH_JSONL_PATH = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/dataset/batch_qna_requests.jsonl"
+BATCH_JSONL_PATH = "../dataset/batch_qna_requests.jsonl"
 
 def get_batch_jsonl_path(save_base_dir, case_type="matched"):
     p = os.path.join(save_base_dir,  case_type, "batch_qna_requests.jsonl")

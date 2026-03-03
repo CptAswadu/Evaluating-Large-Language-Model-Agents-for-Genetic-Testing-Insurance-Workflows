@@ -115,6 +115,7 @@ A total of 789 publicly available genetic testing policy documents  were used fo
 
 These documents are not redistributed in this repository 
 due to size and licensing considerations.
+Please send email to Dr.Cong Liu if you want to get access to collected policy documents (Cong.Liu@childrens.harvard.edu)
 
 All policy documents are publicly accessible via the official payer websites:
 - Aetna

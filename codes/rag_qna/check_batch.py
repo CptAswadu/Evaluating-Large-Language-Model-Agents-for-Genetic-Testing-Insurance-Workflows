@@ -3,7 +3,7 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path='/home/cptaswadu/new-rescue/RESCUE-n8n/.env')
+load_dotenv(dotenv_path='../.env')
 client = OpenAI(api_key=os.getenv("OPEN_AI_API_KEY"))
 
 # problem_batches = [
@@ -77,7 +77,7 @@ client = OpenAI(api_key=os.getenv("OPEN_AI_API_KEY"))
 #         print(f"  Error code: {error['response']['status_code']}")
 #         print(f"  Error: {error['response']['body']['error']['message'][:100]}...")
 
-base_dir = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/LLM_QnA/RAG/final"
+base_dir = "../results/LLM_QnA/RAG/final"
 
 # # batch_id_retry.txt 찾기
 # for root, dirs, files in os.walk(base_dir):

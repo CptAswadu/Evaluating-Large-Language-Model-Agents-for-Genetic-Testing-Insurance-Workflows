@@ -13,7 +13,7 @@ from run_qna import run_qna, clean_json_response, format_questions, build_cached
 import batch_qna_utils
 from batch_qna_utils import enqueue_qna_batch_line, get_batch_jsonl_path, submit_qna_batch
 
-path = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+path = '../'
 load_dotenv(dotenv_path=os.path.join(path, ".env"))
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
 chatgpt_agent = OpenAI(api_key=openai_api_key)

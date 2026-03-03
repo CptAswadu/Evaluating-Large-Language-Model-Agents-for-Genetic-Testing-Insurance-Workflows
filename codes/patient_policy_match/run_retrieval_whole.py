@@ -10,7 +10,7 @@ from calculate_match_rate import calculate_match_rate
 from md5_matching import md5_match_by_rerank_order
 from retrieve_candidates import retrieve_candidates
 
-path = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+path = '../'
 load_dotenv(dotenv_path=os.path.join(path, ".env"))
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
 perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")

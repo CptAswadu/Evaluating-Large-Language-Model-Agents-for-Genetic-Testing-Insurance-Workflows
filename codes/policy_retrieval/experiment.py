@@ -9,20 +9,22 @@ from policy_retrieval import clean_json_response, query_llm_for_payers
 from process_pdf import count_links, process_pdf
 
 def main():
-    DOTENV_PATH = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+    DOTENV_PATH = '../'
     load_dotenv(dotenv_path=os.path.join(DOTENV_PATH, ".env"))
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
 
-    result_base_dir = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/payer_retrieval/final"
+    result_base_dir = "../results/policy_retrieval/final"
     os.makedirs(result_base_dir, exist_ok=True)
 
+    # Define the payers, model, and prompt types for the whole experiment
     # payers = ["United Healthcare", "Aetna", "Cigna", "Blue Cross and Blue Shield Federal Employee Program"]
     model = "openai"
     openai_model = "gpt-4o"
     # prompt_type = ["baseline", "keyword", "verified"]
     
+    # sample execution for one iteration, one prompt type, and one payer
     prompt_type = "verified"
     payer = "Blue Cross and Blue Shield Federal Employee Program"
     iteration = 3
@@ -44,6 +46,7 @@ def main():
     process_pdf(result_file, os.path.join(save_dir, "downloaded"), os.path.join(save_dir, "downloaded_pdfs.csv"))
     print(f"Iteration {iteration}, {prompt_type}, {payer} completed!")
 
+    # Whole experiment execution (uncomment to run the full experiment)
     # for iteration in range(1, 4):
     #     for pt in prompt_type:
     #         for payer in payers:

@@ -3,9 +3,11 @@ from compare_md5 import compare_md5
 from merge_results import merge_results
 
 def main():
-    result_base_dir = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/payer_retrieval/final"
-    existing_pdfs_base_dir = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/dataset/policy_ret"
+    # set the base directory for results and existing PDFs
+    result_base_dir = "../results/payer_retrieval/final"
+    existing_pdfs_base_dir = "../dataset/policy_ret"
 
+    # define the payers, models, and prompt types for the whole assessment
     payers = ["United Healthcare", "Aetna", "Cigna", "Blue Cross and Blue Shield Federal Employee Program"]
     models = ["gpt-4o", "gpt-5-mini"]
     prompt_types = ["baseline", "keyword", "verified"]

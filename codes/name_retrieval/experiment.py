@@ -5,10 +5,10 @@ from prompt import prompt_functions
 from name_retrieval import query_llm_for_providers, clean_json_response
 
 def main():
-    BASE_DIR = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/name_retrieval/final"
+    BASE_DIR = "../results/name_retrieval/final"
     os.makedirs(BASE_DIR, exist_ok=True)
 
-    DOTENV_PATH = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+    DOTENV_PATH = '../'
     load_dotenv(dotenv_path=os.path.join(DOTENV_PATH, ".env"))
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")

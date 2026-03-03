@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 from openai import OpenAI
 
-path = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+path = '../'
 load_dotenv(dotenv_path=os.path.join(path, ".env"))
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
 perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from embedding_policies import embed_policies_from_headers
 
-path = '/home/cptaswadu/new-rescue/RESCUE-n8n'
+path = '../'
 load_dotenv(dotenv_path=os.path.join(path, ".env"))
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
 chatgpt_agent = OpenAI(api_key=openai_api_key)

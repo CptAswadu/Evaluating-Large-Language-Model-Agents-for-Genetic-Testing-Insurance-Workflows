@@ -3,10 +3,11 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path='/home/cptaswadu/new-rescue/RESCUE-n8n/.env')
+load_dotenv(dotenv_path='../.env')
 client = OpenAI(api_key=os.getenv("OPEN_AI_API_KEY"))
 
-base_results_dir = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/LLM_QnA/RAG/final/final_qna_results/open_ai/gpt_5_mini_gpt_5_mini"
+# set your folder path where the batch_id.txt files are stored
+base_results_dir = "../results/LLM_QnA/RAG/final/final_qna_results/open_ai/gpt_5_mini_gpt_5_mini"
 batches = []
 
 for root, dirs, files in os.walk(base_results_dir):
@@ -127,7 +128,7 @@ for i, batch_info in enumerate(batches):
 
 print("\n" + "="*50)
 if failed_batches:
-    failed_path = "/home/cptaswadu/new-rescue/RESCUE-n8n/eval/insurance/results/LLM_QnA/RAG/final/failed_batches.json"
+    failed_path = "../results/LLM_QnA/RAG/final/failed_batches.json"
     with open(failed_path, "w") as f:
         json.dump(failed_batches, f, indent=2)
     print(f"❌ {len(failed_batches)} failed batches saved to:")
