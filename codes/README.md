@@ -167,13 +167,13 @@ This module evaluates downstream decision quality under different document-condi
 ### 5️⃣ analysis_figures/
 
 Contains statistical analysis (QA only), patient-policy match analysis and figure generation scripts used in manuscript preparation.
-- 'Analysis.ipynb'
+- `Analysis.ipynb`
   QA task statistical anlysis
 
-- 'final_figures.ipynb'
+- `final_figures.ipynb`
   Figures for the manuscript
 
-- 'match_rate_analysis.ipynb'
+- `match_rate_analysis.ipynb`
   patient-policy match task statistical anlysis
 
 ---
@@ -186,7 +186,7 @@ Contains statistical analysis (QA only), patient-policy match analysis and figur
 - `batch_check.py`  
   Performs batch checks across experimental outputs and download the results.
 
-- 'benchmark_update.ipynb'
+- `benchmark_update.ipynb`
   Used to update patient samples and ground-truth annotations from the initial generation.  
   Additional manual modifications were performed based on this notebook.
 
