@@ -106,15 +106,15 @@ The goal is to quantify retrieval sensitivity, ranking robustness, and downstrea
 Therefore, the Patient–Policy Matching task must be executed first 
 to generate the required policy-document assignments.
 
-The **Baseline** setting (patient narrative only, without policy documents) can be executed independently.
+The 'Baseline' setting (patient narrative only, without policy documents) can be executed independently.
 ---
 
 ## 📄 Insurance Policy Documents
 
-A total of 789 publicly available genetic testing policy documents  were used for embedding and retrieval experiments.
+A total of 789 publicly available genetic testing policy documents were used for embedding and retrieval experiments.
 
-These documents are not redistributed in this repository 
-due to size and licensing considerations.
+These documents are not redistributed in this repository due to size and licensing considerations.
+
 Please send email to Dr.Cong Liu if you want to get access to collected policy documents (Cong.Liu@childrens.harvard.edu)
 
 All policy documents are publicly accessible via the official payer websites:

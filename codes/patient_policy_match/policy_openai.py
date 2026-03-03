@@ -15,6 +15,7 @@ from run_retrieval_whole import run_retrieval_evaluation_whole
 
 
 def main():
+    # Test mode with only one case to verify the pipeline, set to False for full experiment
     TEST_MODE = True
     TEST_CASE_ID = "Case10917"
 

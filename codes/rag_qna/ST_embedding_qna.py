@@ -10,6 +10,7 @@ from run_qna import clean_json_response, format_questions
 from batch_qna_utils import USE_BATCH_QNA, get_batch_jsonl_path, submit_qna_batch
 
 def main():
+    # Test mode with only one case to verify the pipeline, set to False for full experiment
     TEST_MODE = False
     TEST_CASE_ID = "Case10917"
     N_ITER = 1 if TEST_MODE else 3
