@@ -15,58 +15,52 @@ def main():
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
 
-    result_base_dir = "../results/policy_retrieval/final"
+    # Test mode with only one case to verify the pipeline, set to False for full experiment
+    TEST_MODE = True
+
+    payers = ["United Healthcare", "Aetna", "Cigna", "Blue Cross and Blue Shield Federal Employee Program"]
+    models = ["gpt-4o", "gpt-5-mini"]
+    prompt_types = ["baseline", "keyword", "verified"]
+
+    # test mode
+    if TEST_MODE:
+        result_base_dir = "../results/policy_retrieval/test" 
+        run_iterations = [1]
+        run_payers = ['Blue Cross and Blue Shield Federal Employee Program']
+        run_models = ['gpt-5-mini']
+        run_prompt = ['verified']
+        
+    else:
+        result_base_dir = "../results/policy_retrieval/final"
+        run_iterations = [1, 2, 3]
+        run_payers = payers
+        run_models = models
+        run_prompt = prompt_types
+
     os.makedirs(result_base_dir, exist_ok=True)
-
-    # Define the payers, model, and prompt types for the whole experiment
-    # payers = ["United Healthcare", "Aetna", "Cigna", "Blue Cross and Blue Shield Federal Employee Program"]
-    model = "openai"
-    openai_model = "gpt-4o"
-    # prompt_type = ["baseline", "keyword", "verified"]
     
-    # sample execution for one iteration, one prompt type, and one payer
-    prompt_type = "verified"
-    payer = "Blue Cross and Blue Shield Federal Employee Program"
-    iteration = 3
+    for iteration in run_iterations:
+        for openai_model in run_models:
+            for pt in run_prompt:
+                for payer in run_payers:
+                    print(f"Running: iter={iteration}, model={openai_model}, prompt={pt}, payer={payer}")
+                    query_llm_for_payers(
+                        payer_name=payer,
+                        prompt_type=pt,
+                        model="openai",
+                        openai_model=openai_model,
+                        iteration=iteration,
+                        base_output_dir=result_base_dir,
+                        openai_client=chatgpt_agent
+                    )
 
-    query_llm_for_payers(
-        payer_name=payer,
-        prompt_type=prompt_type,
-        model=model,
-        openai_model=openai_model,
-        iteration=iteration,
-        base_output_dir=result_base_dir,
-        openai_client=chatgpt_agent
-    )
-
-    result_file = os.path.join(result_base_dir, f"iteration_{iteration}", openai_model, prompt_type, payer.replace(" ", "_"), f"{payer}_result.json")
-    count_links(result_file)
-
-    save_dir = os.path.dirname(result_file)
-    process_pdf(result_file, os.path.join(save_dir, "downloaded"), os.path.join(save_dir, "downloaded_pdfs.csv"))
-    print(f"Iteration {iteration}, {prompt_type}, {payer} completed!")
-
-    # Whole experiment execution (uncomment to run the full experiment)
-    # for iteration in range(1, 4):
-    #     for pt in prompt_type:
-    #         for payer in payers:
-    #             result = query_llm_for_payers(
-    #                 payer_name=payer,
-    #                 prompt_type=pt,
-    #                 model=model,
-    #                 openai_model=openai_model,
-    #                 iteration=iteration,
-    #                 base_output_dir=result_base_dir,
-    #                 openai_client=chatgpt_agent
-    #             )
-
-    #             result_file = os.path.join(result_base_dir, f"iteration_{iteration}", openai_model, pt, payer.replace(" ", "_"), f"{payer}_result.json")
-    #             count_links(result_file)
+                    result_file = os.path.join(result_base_dir, f"iteration_{iteration}", openai_model, pt, payer.replace(" ", "_"), f"{payer}_result.json")
+                    count_links(result_file)
                 
-    #             save_dir = os.path.dirname(result_file)
-    #             process_pdf(result_file, os.path.join(save_dir, "downloaded"), os.path.join(save_dir, "downloaded_pdfs.csv"))
+                    save_dir = os.path.dirname(result_file)
+                    process_pdf(result_file, os.path.join(save_dir, "downloaded"), os.path.join(save_dir, "downloaded_pdfs.csv"))
 
-    #             print(f"Iteration {iteration}, {pt}, {payer} completed!")
+                    print(f"Iteration {iteration}, {pt}, {payer} completed!")
 
 if __name__ == "__main__":
     main()

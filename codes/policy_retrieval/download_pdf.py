@@ -1,10 +1,12 @@
 import requests
 import hashlib
+from urllib.parse import quote
 
 def download_pdf(url, save_path):
     '''Download a PDF from a URL and save it to the specified path'''
     try:
-        response = requests.get(url, timeout=15)
+        encoded_url = quote(url, safe=':/?=&#%')
+        response = requests.get(encoded_url, timeout=15)
         response.raise_for_status()
         with open(save_path, "wb") as f:
             f.write(response.content)
