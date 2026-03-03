@@ -68,9 +68,9 @@ def main():
 
     for exp in EXPERIMENTS:
         for iter_idx in range(1, N_ITER + 1):
-                # for batch tracking
-            # unmatched_batches = []
-            # matched_batches = []
+            # for batch tracking
+            unmatched_batches = []
+            matched_batches = []
             correct_batches = []
             incorrect_batches = []
             exp_type = exp["type"] 
@@ -99,19 +99,19 @@ def main():
             )
             os.makedirs(BASELINE_SAVE_DIR, exist_ok=True)
 
-            # unmatched_cases = load_unmatched_cases(
-            #         RERANK_DIR,  
-            #         rerank_model=RETRIEVAL_MODEL,
-            #         top_k=K_RERANK,
-            #         save_csv=True  
-            # )
+            unmatched_cases = load_unmatched_cases(
+                    RERANK_DIR,  
+                    rerank_model=RETRIEVAL_MODEL,
+                    top_k=K_RERANK,
+                    save_csv=True  
+            )
 
-            # matched_cases = load_matched_cases(
-            #         RERANK_DIR,
-            #         rerank_model=RETRIEVAL_MODEL,
-            #         top_k=K_RERANK,
-            #         save_csv=True
-            # )
+            matched_cases = load_matched_cases(
+                    RERANK_DIR,
+                    rerank_model=RETRIEVAL_MODEL,
+                    top_k=K_RERANK,
+                    save_csv=True
+            )
 
             all_correct_cases = load_correct_cases(
                     RERANK_DIR,
