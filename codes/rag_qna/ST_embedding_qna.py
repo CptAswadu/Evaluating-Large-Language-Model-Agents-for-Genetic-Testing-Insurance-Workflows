@@ -1,8 +1,11 @@
 import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "patient_policy_match"))
+sys.path.append(os.path.dirname(__file__))
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
-from codes.patient_policy_match.load_policy import load_policies
+from load_policy import load_policies
 from load_cases import load_unmatched_cases, load_matched_cases, load_correct_cases, load_incorrect_cases
 from qna_execute import run_qna_for_cases
 from qna_execute_baseline import run_baseline_qna_for_cases
@@ -27,14 +30,17 @@ def main():
     
     BASE_DIR = "../dataset"
     DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
-    POLICY_FOLDER = f"{BASE_DIR}/insurance_policy"
+    POLICY_FOLDER = f"{BASE_DIR}/policy_answer" if TEST_MODE else f"{BASE_DIR}/insurance_policy"
     QUESTIONS_PATH = f"{BASE_DIR}/Insurance_Genetic_Testing_QA_Updated.json"
     INIT_RESULTS_BASE = "../results/patient_policy_match"
-    RESULTS_BASE = "../results/LLM_QnA/RAG/final/final_qna_results/ST"
+    RESULTS_BASE = "../results/LLM_QnA/RAG/test/ST" if TEST_MODE else "../results/LLM_QnA/RAG/final/final_qna_results/ST"
     os.makedirs(RESULTS_BASE, exist_ok=True)
 
     RETRIEVAL_MODEL = "gpt-5-mini"
     QNA_MODEL = "gpt-5-mini"
+
+    run_mode = "test" if TEST_MODE else "full"
+    embedder_type = "ST" 
 
     if TEST_MODE:
         EXPERIMENTS = [{"type": "header", "k_retrieval": 10, "k_rerank": 1}]
@@ -77,24 +83,25 @@ def main():
             K_RERANK = exp["k_rerank"]
 
             RERANK_DIR = (
-                    f"{INIT_RESULTS_BASE}/"
-                    f"top{K_RERANK}_{K_RETRIEVAL}retrieve_"
-                    f"{RETRIEVAL_MODEL.replace('-','_')}_{QNA_MODEL.replace('-','_')}_update"
+                    f"{INIT_RESULTS_BASE}/{run_mode}/{embedder_type}/{exp_type}/"
+                    f"top{K_RERANK}_{K_RETRIEVAL}retrieve_{RETRIEVAL_MODEL.replace('-','_')}_{QNA_MODEL.replace('-','_')}_update"
                 )
 
             RAG_SAVE_DIR = os.path.join(
                 RESULTS_BASE,
                 f"{RETRIEVAL_MODEL.replace('-','_')}_{QNA_MODEL.replace('-','_')}",
-                "rag",
-                f"{exp_type}_k{K_RETRIEVAL}_rerank{K_RERANK}"
+                "rag", 
+                f"iter{iter_idx}",
+                f"top_{K_RETRIEVAL}_rerank{K_RERANK}"
             )
             os.makedirs(RAG_SAVE_DIR, exist_ok=True)
         
             BASELINE_SAVE_DIR = os.path.join(
                 RESULTS_BASE,
                 f"{RETRIEVAL_MODEL.replace('-','_')}_{QNA_MODEL.replace('-','_')}",
-                "baseline",
-                f"{exp_type}_k{K_RETRIEVAL}_rerank{K_RERANK}"
+                "baseline", 
+                f"iter{iter_idx}",
+                f"top_{K_RETRIEVAL}_rerank{K_RERANK}"
             )
             os.makedirs(BASELINE_SAVE_DIR, exist_ok=True)
 
@@ -409,13 +416,14 @@ def main():
             # with open(matched_summary_path, "w", encoding="utf-8") as f:
             #     json.dump(matched_batches, f, indent=2, ensure_ascii=False)
 
-            all_correct_summary_path = f"{RESULTS_BASE}/batch_summary_all_correct_ST_iter{iter_idx}.json"
-            with open(all_correct_summary_path, "w", encoding="utf-8") as f:
-                json.dump(correct_batches, f, indent=2, ensure_ascii=False)
+            if not TEST_MODE:
+                all_correct_summary_path = f"{RESULTS_BASE}/batch_summary_all_correct_openai_iter{iter_idx}.json"
+                with open(all_correct_summary_path, "w", encoding="utf-8") as f:
+                    json.dump(correct_batches, f, indent=2, ensure_ascii=False)
 
-            all_incorrect_summary_path = f"{RESULTS_BASE}/batch_summary_all_incorrect_ST_iter{iter_idx}.json"
-            with open(all_incorrect_summary_path, "w", encoding="utf-8") as f:
-                json.dump(incorrect_batches, f, indent=2, ensure_ascii=False)
+                all_incorrect_summary_path = f"{RESULTS_BASE}/batch_summary_all_incorrect_openai_iter{iter_idx}.json"
+                with open(all_incorrect_summary_path, "w", encoding="utf-8") as f:
+                    json.dump(incorrect_batches, f, indent=2, ensure_ascii=False)
 
 
 if __name__ == "__main__":

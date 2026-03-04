@@ -24,11 +24,12 @@ def main():
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
+
 # set the directory paths for dataset and results
     BASE_DIR = "../dataset"
     DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
-    POLICY_FOLDER = f"{BASE_DIR}/insurance_policy"
-    RESULTS_BASE = "../results/patient_policy_match"
+    POLICY_FOLDER = f"{BASE_DIR}/policy_answer" if TEST_MODE else f"{BASE_DIR}/insurance_policy"
+    RESULTS_BASE = "../results/patient_policy_match/test/ST/header" if TEST_MODE else "../results/patient_policy_match/full/ST/header"
     os.makedirs(RESULTS_BASE, exist_ok=True)
 
 
@@ -57,6 +58,8 @@ def main():
     else:
         TEST_DATASET_PATH = DATASET_PATH
 
+    cache_suffix = "ST_header_test" if TEST_MODE else "ST_header"
+
     policies, md5s, headers = load_policies(POLICY_FOLDER)
 
     embeddings_header, doc_names_header, embedding_matrix_header = embed_policies_from_headers(
@@ -64,7 +67,7 @@ def main():
         md5s=md5s,
         cache_dir= BASE_DIR,
         embedder_id="all-MiniLM-L6-v2",
-        cache_suffix="ST_header"
+        cache_suffix=cache_suffix
     )
     
     for K_RETRIEVAL in K_RETRIEVAL_HEADER:

@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import requests
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -8,9 +9,10 @@ path = '../'
 load_dotenv(dotenv_path=os.path.join(path, ".env"))
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
 chatgpt_agent = OpenAI(api_key=openai_api_key)
+perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
 
 def rerank_policies(patient_info, candidates, llm_model,
-                    openai_client=None, max_preview_chars=1000,
+                    openai_client=None, perplexity_api_key=None,
                     save_dir=None, case_id=None, top_k=None, return_success=False):
     '''Re-rank a list of candidate insurance policies using an LLM'''
     if not candidates:
@@ -19,7 +21,7 @@ def rerank_policies(patient_info, candidates, llm_model,
     top_k = int(top_k) if top_k is not None else None
 
     # Preview candidate texts (truncate and clean newlines)
-    candidate_texts = [f"{c[0]}\n{str(c[2] or '')[:max_preview_chars].replace('\n',' ')}" for c in candidates]
+    candidate_texts = [f"{c[0]}\n{str(c[2] or '').replace('\n',' ')}" for c in candidates]
 
     # Build LLM prompt
     prompt = f"""You are an expert insurance policy analyst specializing in genetic testing coverage.
@@ -55,6 +57,24 @@ Candidate Policies (numbered):
             response = openai_client.chat.completions.create(**api_params)
             result = response.choices[0].message.content.strip()
 
+        elif llm_model.lower() == "perplexity":
+            if not perplexity_api_key:
+                raise ValueError("perplexity_api_key is required for Perplexity.")
+            headers = {
+                "Authorization": f"Bearer {perplexity_api_key}",
+                "Content-Type": "application/json"
+            }
+            data = {
+                "model": "sonar-pro",
+                "messages": messages,
+                "temperature": 0
+            }
+            url = "https://api.perplexity.ai/chat/completions"
+            res = requests.post(url, headers=headers, json=data)
+            res.raise_for_status()
+            result = res.json()["choices"][0]["message"]["content"].strip()
+
+        
         else:
             raise ValueError(f"Unsupported LLM model: {llm_model}")
         

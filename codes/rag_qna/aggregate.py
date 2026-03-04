@@ -202,5 +202,11 @@ def aggregate_all_results(base_path="../results/LLM_QnA/RAG/final/final_qna_resu
     return df
 
 if __name__ == "__main__":
-    df = aggregate_all_results()
+    # Set test mode and embedding type
+    TEST_MODE = True
+    EMBEDDER_TYPE = "ST"  # "openai" or "ST"
+
+    run_mode = "test" if TEST_MODE else "full"
+    base_path = f"../results/LLM_QnA/RAG/{run_mode}/{EMBEDDER_TYPE}"
+    df = aggregate_all_results(base_path)
     print("\nAggregation complete.")

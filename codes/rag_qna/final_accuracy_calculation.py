@@ -157,10 +157,21 @@ def calculate_accuracy(results_csv_path, ground_truth_json_path, output_csv_path
 
 # Main execution
 if __name__ == "__main__":
+    # change to False to run on full dataset, True for testing with a smaller subset
+    TEST_MODE = True
+    EMBEDDER_TYPE = "ST"  # "openai" or "ST"
+    run_mode = "test" if TEST_MODE else "full"
+
     # set the directory paths for results and ground truth
-    results_csv = "../results/LLM_QnA/RAG/final/final_qna_results/final_all_results_combined.csv"
-    ground_truth_json = "../dataset/final_ground_truth.json"
-    output_csv = "../results/LLM_QnA/RAG/final/final_qna_results/final_results_with_accuracy_updated.csv"
+    if TEST_MODE:
+        results_csv = f"../results/LLM_QnA/RAG/test/{EMBEDDER_TYPE}/final_all_results_combined.csv"
+        ground_truth_json = "../dataset/final_ground_truth.json"
+        output_csv = f"../results/LLM_QnA/RAG/test/{EMBEDDER_TYPE}/final_results_with_accuracy.csv"
+    else:
+        results_csv = f"../results/LLM_QnA/RAG/final/{EMBEDDER_TYPE}/final_all_results_combined.csv"
+        ground_truth_json = "../dataset/final_ground_truth.json"
+        output_csv = f"../results/LLM_QnA/RAG/final/{EMBEDDER_TYPE}/final_results_with_accuracy_updated.csv"
+
     
     df = calculate_accuracy(results_csv, ground_truth_json, output_csv)
     

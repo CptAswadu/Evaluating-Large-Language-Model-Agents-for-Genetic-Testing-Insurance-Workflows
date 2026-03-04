@@ -21,13 +21,13 @@ def main():
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
+    
     # set the directory paths for dataset and results
     BASE_DIR = "../dataset"
     DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
-    POLICY_FOLDER = f"{BASE_DIR}/insurance_policy"
-
-    save_dir = "../results/patient_policy_match/whole_policy"
-    os.makedirs(save_dir, exist_ok=True)
+    POLICY_FOLDER = f"{BASE_DIR}/policy_answer" if TEST_MODE else f"{BASE_DIR}/insurance_policy"
+    RESULTS_BASE = "../results/patient_policy_match/test/ST/policy" if TEST_MODE else "../results/patient_policy_match/full/ST/policy"
+    os.makedirs(RESULTS_BASE, exist_ok=True)
 
     if TEST_MODE:
         # only run the retrieval and reranking for a specific test case, to verify the correctness of the pipeline and debug if necessary
@@ -50,20 +50,22 @@ def main():
     else:
         TEST_DATASET_PATH = DATASET_PATH
 
+    cache_suffix = "ST_whole_test" if TEST_MODE else "ST_whole"
+
     policies, md5s, headers = load_policies(POLICY_FOLDER)
 
     embeddings, doc_names, embedding_matrix = embed_policies_from_headers(
         headers=policies,
         md5s=md5s,
-        cache_dir= save_dir,
+        cache_dir= RESULTS_BASE,
         embedder_id="all-MiniLM-L6-v2",
-        cache_suffix="whole_policy"
+        cache_suffix=cache_suffix
     )
 
     # only 10 policies for reranking possible, since the whole policy text is much longer than header
     run_retrieval_evaluation_whole(
         dataset_path=TEST_DATASET_PATH,
-        base_dir=save_dir,
+        base_dir=RESULTS_BASE,
         embedding_matrix=embedding_matrix,
         doc_names=doc_names,
         policies=policies,

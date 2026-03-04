@@ -1,4 +1,5 @@
 import os
+from statistics import mode
 import pandas as pd
 import json
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
@@ -24,14 +25,18 @@ def main():
     openai_api_key = os.getenv("OPEN_AI_API_KEY")
     perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
     chatgpt_agent = OpenAI(api_key=openai_api_key)
-    
-    BASE_DIR = "../dataset"
-    DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
-    POLICY_FOLDER = f"{BASE_DIR}/insurance_policy"
 
     RETRIEVAL_MODELS = ["gpt-5-mini"]
     EMBEDDER = "text-embedding-3-small"
+    run_mode = "test" if TEST_MODE else "full"
+    model_name = RETRIEVAL_MODELS[0].replace('-', '_')
+    embedder_type = "openai" if "text-embedding" in EMBEDDER else "ST"
+
+    BASE_DIR = "../dataset"
+    DATASET_PATH = f"{BASE_DIR}/qna_free_text_sample.json"
+    POLICY_FOLDER = f"{BASE_DIR}/policy_answer" if TEST_MODE else f"{BASE_DIR}/insurance_policy"
     RESULTS_BASE = "../results/patient_policy_match"
+    os.makedirs(RESULTS_BASE, exist_ok=True)
 
     if TEST_MODE:
         # only run the retrieval and reranking for a specific test case, to verify the correctness of the pipeline and debug if necessary
@@ -57,24 +62,20 @@ def main():
         print(f"TEST MODE: Using single case {TEST_CASE_ID}")
     else:
         TEST_DATASET_PATH = DATASET_PATH
-    
+
     print("Loading policies...")
     policies, md5s, headers = load_policies(POLICY_FOLDER)
 
     print("Creating embeddings...") 
-    embeddings_header, doc_names_header, embedding_matrix_header = embed_policies_from_headers(headers=headers, md5s=md5s, cache_dir=BASE_DIR, embedder_id=EMBEDDER, cache_suffix="headers_openai" )
-    embeddings_policy, doc_names_policy, embedding_matrix_policy = embed_policies_from_headers(headers=policies, md5s=md5s, cache_dir=BASE_DIR, embedder_id=EMBEDDER, cache_suffix="policy_openai" )
+    embeddings_header, doc_names_header, embedding_matrix_header = embed_policies_from_headers(headers=headers, md5s=md5s, cache_dir=BASE_DIR, embedder_id=EMBEDDER, cache_suffix=f"headers_{embedder_type}_{run_mode}" )
+    embeddings_policy, doc_names_policy, embedding_matrix_policy = embed_policies_from_headers(headers=policies, md5s=md5s, cache_dir=BASE_DIR, embedder_id=EMBEDDER, cache_suffix=f"policy_{embedder_type}_{run_mode}" )
 
     all_results = {}
     
     for K_RETRIEVAL in K_RETRIEVAL_HEADER:
         for K_RERANK in K_RERANK_LIST:
 
-            SAVE_BASE_DIR = (
-                f"{RESULTS_BASE}/"
-                f"top{K_RERANK}_{K_RETRIEVAL}retrieve_"
-                f"{RETRIEVAL_MODELS[0].replace('-','_')}_header_openai_small"
-            )
+            SAVE_BASE_DIR = f"{RESULTS_BASE}/{run_mode}/{embedder_type}/header/top{K_RERANK}_{K_RETRIEVAL}retrieve_{model_name}_header_openai_small"
             os.makedirs(SAVE_BASE_DIR, exist_ok=True)
             os.makedirs(f"{SAVE_BASE_DIR}/retrieval", exist_ok=True)
 
@@ -98,11 +99,7 @@ def main():
     for K_RETRIEVAL in K_RETRIEVAL_POLICY:
         for K_RERANK in K_RERANK_LIST:
 
-            SAVE_BASE_DIR = (
-                f"{RESULTS_BASE}/"
-                f"top{K_RERANK}_{K_RETRIEVAL}retrieve_"
-                f"{RETRIEVAL_MODELS[0].replace('-','_')}_policy_openai_small"
-            )
+            SAVE_BASE_DIR = f"{RESULTS_BASE}/{run_mode}/{embedder_type}/policy/top{K_RERANK}_{K_RETRIEVAL}retrieve_{model_name}_policy_openai_small"
             os.makedirs(SAVE_BASE_DIR, exist_ok=True)
             os.makedirs(f"{SAVE_BASE_DIR}/retrieval", exist_ok=True)
 
@@ -145,7 +142,7 @@ def main():
             })
     
     df_summary = pd.DataFrame(summary_data)
-    summary_path = f"{RESULTS_BASE}/summary_all_configs.csv"
+    summary_path = f"{RESULTS_BASE}/{run_mode}/{embedder_type}/summary_all_configs_openai.csv"
     df_summary.to_csv(summary_path, index=False)
     print(f" Summary saved to: {summary_path}")
 

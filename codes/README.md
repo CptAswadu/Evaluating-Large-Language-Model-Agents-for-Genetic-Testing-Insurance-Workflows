@@ -32,6 +32,19 @@ Instead, it consumes previously generated patient–policy matching results and 
 - **All Incorrect**: Every patient is paired with a high-similarity but incorrect policy document (excluding the ground truth).
 
 ---
+## 🔹 Configuration (Policy Document Directory)
+
+For tasks that require policy documents (Policy Retrieval Assessment, Patient–Policy Matching, and QA with document conditioning), policy documents must be stored locally and the directory path must be set correctly before running the scripts.
+
+- The scripts expect a local directory containing the policy documents.
+- Please update the policy document directory path in the corresponding scripts before execution.
+
+> ⚠️ **Note**
+>
+> - Tasks **3 (Patient–Policy Match)** and **4 (LLM QA)** were executed using **GPT-5-Mini** in the experiments reported in the manuscript.
+> - Some paths and configurations are **hardcoded for the GPT-5-Mini setup**.
+> - If you use a different LLM or modify the experiment configuration, please adjust the relevant paths and model settings accordingly.
+---
 
 ## 🔹 Run Examples
 
@@ -54,17 +67,17 @@ python name_retrieval/execute_analysis.py
 ```bash
 python policy_retrieval/experiment.py
 ```
-Assessment
+Assessment  
 (Please store policy documents first and set the directory.)
 ```bash
 python policy_retrieval/assess.py
 ```
 
 ### 3️⃣ Patient–policy matching
-Experiment and Assessment
+Experiment and Assessment  
 (Please store policy documents first and set the directory.)
 
-Each file contains both experiment and assessment.
+Each file contains both experiment and assessment.  
 
 SentenceTransformer (header input):
 ```bash
@@ -82,7 +95,7 @@ python patient_policy_match/policy_openai.py
 ```
 
 ### 4️⃣ LLM QA (used in manuscript)
-Experiment
+Experiment 
 ```bash
 python rag_qna/openai_embedding.py
 ```
@@ -94,7 +107,7 @@ python rag_qna/aggregate.py
 
 2. Calculate accuracy
 ```bash
-python rag_qna/final_accuracy_caluclation.py
+python rag_qna/final_accuracy_calculation.py
 ```
 ---
 
@@ -167,13 +180,13 @@ This module evaluates downstream decision quality under different document-condi
 ### 5️⃣ analysis_figures/
 
 Contains statistical analysis (QA only), patient-policy match analysis and figure generation scripts used in manuscript preparation.
-- `Analysis.ipynb`
+- `Analysis.ipynb`  
   QA task statistical anlysis
 
-- `final_figures.ipynb`
+- `final_figures.ipynb`  
   Figures for the manuscript
 
-- `match_rate_analysis.ipynb`
+- `match_rate_analysis.ipynb`  
   patient-policy match task statistical anlysis
 
 ---
@@ -186,7 +199,7 @@ Contains statistical analysis (QA only), patient-policy match analysis and figur
 - `batch_check.py`  
   Performs batch checks across experimental outputs and download the results.
 
-- `benchmark_update.ipynb`
+- `benchmark_update.ipynb`  
   Used to update patient samples and ground-truth annotations from the initial generation.  
   Additional manual modifications were performed based on this notebook.
 
