@@ -15,7 +15,7 @@ For policy retrieval task assessment, patient-policy match and QA task with docu
 |-------|------|--------------|-------------|---------|
 | Stage 1 | Payer name retrieval | `name_retrieval/experiment.py` | LLM-based payer identification experiments | `results/name_retrieval/` |
 | Stage 2 | Policy document retrieval | `policy_retrieval/experiment.py` | Policy link retrieval + MD5 verification | `results/policy_retrieval/` |
-| Stage 3 | Patient–policy matching (ST + header) | `patient_policy_match/header_execute.py` | SentenceTransformer embedding + summarized policy |input | `results/patient_policy_match/full/ST/header` |
+| Stage 3 | Patient–policy matching (ST + header) | `patient_policy_match/header_execute.py` | SentenceTransformer embedding + summarized policy input | `results/patient_policy_match/full/ST/header` |
 | Stage 3 | Patient–policy matching (ST + whole policy) | `patient_policy_match/whole_policy_execute.py` | SentenceTransformer embedding + full policy text | `results/patient_policy_match/full/ST/policy` |
 | Stage 3 | Patient–policy matching (OpenAI embedding) | `patient_policy_match/policy_openai.py` | OpenAI text-embedding-3-small + header/whole-policy input | `results/patient_policy_match/full/openai` |
 | Stage 4 | Insurance QA Evaluation (OpenAI backbone) | `rag_qna/openai_embedding.py` | Executes structured insurance QA (Q0–Q8) under document-conditioning settings (Baseline (no document), all_correct, all_incorrect) using Text-embedding-3-small embedding based patient-policy matching (match/unmatch) results. This configuration is used in the manuscript. | `results/LLM_QnA/RAG/final/final_qna_results/open_ai` |
@@ -49,7 +49,8 @@ Instead, it consumes previously generated patient–policy matching results and 
 For tasks that require policy documents (Policy Retrieval Assessment, Patient–Policy Matching, and QA with document conditioning), policy documents must be stored locally and the directory path must be set correctly before running the scripts.
 
 - The scripts expect a local directory containing the policy documents.
-- Please update the policy document directory path in the corresponding scripts before execution.
+- Please update the policy document directory path in the corresponding scripts before execution.  
+---  
 
 ## 🔹 SentenceTransformer Model Download
 
@@ -70,7 +71,21 @@ Once the model has been downloaded and cached locally, the experiments
 can be executed in offline mode by enabling these variables if desired.
 
 This ensures that subsequent runs rely only on locally cached models
-without accessing external servers.
+without accessing external servers.  
+---  
+## 🔹 Test Mode (Execution Setting)
+
+Several entry scripts are configured with a **test mode**.  
+```python
+TEST_MODE = True
+```  
+If the setting is test mode, the script runs only a single sample case to verify that the pipeline works correctly.  
+
+To run the full experiment used in the manuscript, this setting must be changed to:  
+```python
+TEST_MODE = False
+```  
+---  
 
 > ⚠️ **Note**
 >

@@ -381,4 +381,13 @@ Additional diagnostic fields record:
 - `not_answerable_count`
 
 These outputs are used for the statistical analysis and figures reported in the manuscript.
----
+---  
+@misc{kim2026evaluating,
+  title        = {Evaluating Large Language Model Agents for Genetic Testing Insurance Workflows: An End-to-End Assessment of Retrieval and Reliability},
+  author       = {Kim, Junyoung and Ravi, Kamalakkannan and Liu, Cong},
+  year         = {2026},
+  eprint       = {arXiv:XXXX.XXXXX},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CL},
+  institution  = {Boston Children's Hospital and Harvard Medical School}
+}
