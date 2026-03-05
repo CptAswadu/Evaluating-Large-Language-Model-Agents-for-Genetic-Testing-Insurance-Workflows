@@ -2,6 +2,8 @@ import os
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
+# os.environ["TRANSFORMERS_OFFLINE"] = "1" # to ensure no online access for Hugging Face models, relying solely on local cache
+# os.environ["HF_HUB_OFFLINE"] = "1" # to ensure no online access for Hugging Face models, relying solely on local cache
 from sentence_transformers import SentenceTransformer
 from load_policy import load_policies, calculate_pdf_md5
 from embedding_policies import embed_policies_from_headers

@@ -2,8 +2,8 @@ import os
 from statistics import mode
 import pandas as pd
 import json
-os.environ["TRANSFORMERS_OFFLINE"] = "1"
-os.environ["HF_HUB_OFFLINE"] = "1"
+# os.environ["TRANSFORMERS_OFFLINE"] = "1" # to ensure no online access for Hugging Face models, relying solely on local cache
+# os.environ["HF_HUB_OFFLINE"] = "1" # to ensure no online access for Hugging Face models, relying solely on local cache
 from dotenv import load_dotenv
 from openai import OpenAI
 from load_policy import load_policies, calculate_pdf_md5

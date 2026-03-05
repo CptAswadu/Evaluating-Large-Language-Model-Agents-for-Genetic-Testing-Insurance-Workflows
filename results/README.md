@@ -133,141 +133,58 @@ Contains results for **patient-policy matching**.
 
 ## 📂 Structure
 ```bash
-patient_policy_match/
-└── top1_10retrieve_gpt_5_mini_gpt_5_mini_update/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top1/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top1_matched_docs.csv
-│   │    │       └── top1_unmatched_docs.csv
-└── top1_10retrieve_gpt_5_mini_header_openai_small/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top1/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top1_matched_docs.csv
-│   │    │       └── top1_unmatched_docs.csv
-└── top1_10retrieve_gpt_5_mini_policy_openai_small/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top1/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top1_matched_docs.csv
-│   │    │       └── top1_unmatched_docs.csv
-└── top1_30retrieve_gpt_5_mini_gpt_5_mini_update/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top1/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top1_matched_docs.csv
-│   │    │       └── top1_unmatched_docs.csv
-└── top1_30retrieve_gpt_5_mini_header_openai_small/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top1/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top1_matched_docs.csv
-│   │    │       └── top1_unmatched_docs.csv
-└── top3_10retrieve_gpt_5_mini_gpt_5_mini_update/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top3/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top3_docs.csv
-│   │    │       ├── top3_matched_docs.csv
-│   │    │       └── top3_unmatched_docs.csv
-└── top3_10retrieve_gpt_5_mini_header_openai_small/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top3/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top3_docs.csv
-│   │    │       ├── top3_matched_docs.csv
-│   │    │       └── top3_unmatched_docs.csv
-└── top3_10retrieve_gpt_5_mini_policy_openai_small/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top1/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── rerank_failed_cases.json
-│   │    │       ├── top3_docs.csv
-│   │    │       ├── top3_matched_docs.csv
-│   │    │       └── top3_unmatched_docs.csv
-└── top3_30retrieve_gpt_5_mini_gpt_5_mini_update/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top3/
-│   │    │       ├── correct_cases.csv
-│   │    │       ├── incorrect_cases.csv
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top3_docs.csv
-│   │    │       ├── top3_matched_docs.csv
-│   │    │       └── top3_unmatched_docs.csv
-└── top3_30retrieve_gpt_5_mini_header_openai_small/
-│   └── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   └── top3/
-│   │    │       ├── correct_cases.csv
-│   │    │       ├── incorrect_cases.csv
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       ├── top3_docs.csv
-│   │    │       ├── top3_matched_docs.csv
-│   │    │       └── top3_unmatched_docs.csv
-└── whole_policy/
-│   ├── retrieval/
-│   │    └── gpt_5_mini/
-│   │    │   ├── top1/
-│   │    │   │   ├── matching_summary.csv
-│   │    │   │   ├── rank_change_detail.csv
-│   │    │   │   └── rerank_orders.csv
-│   │    │   └── top3/
-│   │    │       ├── matching_summary.csv
-│   │    │       ├── rank_change_detail.csv
-│   │    │       ├── rerank_orders.csv
-│   │    │       └── top3_docs.csv
-│   └── rank_change_summary.csv
+results/patient_policy_match/
+└── full/
+    ├── openai/
+    │   ├── header/
+    │   │   ├── top1_10retrieve_gpt_5_mini_header_openai_small/
+    |   │   │    └── retrieval/
+    │   │   │       └── gpt_5_mini/
+    │   │   │            └── top1/
+    │   │   │                ├── matching_summary.csv
+    │   │   │                ├── rank_change_detail.csv
+    │   │   │                ├── rerank_orders.csv
+    │   │   │                ├── top1_matched_docs.csv
+    │   │   │                └── top1_unmatched_docs.csv
+    │   │   ├── top3_10retrieve_gpt_5_mini_header_openai_small/
+    │   │   ├── top1_30retrieve_gpt_5_mini_header_openai_small/
+    │   │   └── top3_30retrieve_gpt_5_mini_header_openai_small/
+    │   │
+    │   └── policy/
+    │       ├── top1_10retrieve_gpt_5_mini_policy_openai_small/
+    │       └── top3_10retrieve_gpt_5_mini_policy_openai_small/
+    │
+    └── ST/
+        ├── header/
+        │   ├── top1_10retrieve_gpt_5_mini_gpt_5_mini_update/
+        │   ├── top3_10retrieve_gpt_5_mini_gpt_5_mini_update/
+        │   ├── top1_30retrieve_gpt_5_mini_gpt_5_mini_update/
+        │   └── top3_30retrieve_gpt_5_mini_gpt_5_mini_update/
+        │
+        └── policy/
+
 ```
 
 ## 🔹 Experimental configurations
 
 Each subfolder corresponds to a **patient–policy matching** run under a specific retrieval + embedding + input setting.
 
-### Naming pattern
+### Naming pattern and Organization
+
+Patient–policy matching results are organized by:
+
+1. **Run mode**: `test/` vs `full/`
+2. **Embedding backbone**: `openai/` vs `ST/`
+3. **Policy input type**: `header/` (summary) vs `policy/` (full text)
 
 #### 1) SentenceTransformer embedding (baseline embedding backbone)
 - `top{k}_{c}retrieve_{rerank_model}_{QA_model}_update`  
   Uses **SentenceTransformer embeddings** with **header (policy summarization) input**.
 
-- `whole_policy/`  
-  Uses **SentenceTransformer embeddings** with **whole-policy text input**.
-
 #### 2) OpenAI embedding (text-embedding-3-small)
-- `top{k}_{c}retrieve_{rerank_model}_header_openai_small`  
+- `top{k}_{c}retrieve_{rerank_model}_{input}_openai_small`  
   Uses **OpenAI text-embedding-3-small** with **header (policy summarization) input**.
 
-- `top{k}_{c}retrieve_{rerank_model}_policy_openai_small`  
-  Uses **OpenAI text-embedding-3-small** with **whole-policy text input**.
 
 ### Folder contents
 
@@ -368,7 +285,7 @@ The `LLM_QnA` module evaluates downstream question-answering performance under d
 - `ST/`  
   Uses **SentenceTransformer embeddings** for patient–policy matching.
 
-For both backbones, the downstream **QnA model remains fixed** (e.g., `gpt_5_mini`).
+For both backbones, the downstream **QnA model remains fixed** (e.g., `gpt-5-mini`).
 
 ---
 ### Experimental modes
@@ -433,4 +350,35 @@ These store metadata for submitted batch jobs across iterations.
   Used for final statistical analysis and manuscript tables. Includes computed performance metrics:
   - Accuracy
   - Adjusted Accuracy  
+
+Each row corresponds to **one patient case × QA mode × iteration**.
+
+Key fields include:
+
+| Column | Description |
+|------|-------------|
+| `case_id` | Unique identifier of the patient case |
+| `mode` | QA mode (`baseline` or `rag`) |
+| `case_type` | Document condition (`without_policy`, `all_correct`, `all_incorrect`) |
+| `iteration` | Experiment iteration (`iter1`, `iter2`, `iter3`) |
+
+For each question **Q0–Q8**, the table stores:
+
+- `Qx_answer` – model prediction  
+- `Qx_reasoning` – LLM explanation
+
+Evaluation metrics include:
+
+- `correct`, `total`, `accuracy` – overall QA performance
+- `adjusted_correct`, `adjusted_total`, `adjusted_accuracy` – metrics excluding questions where the ground-truth answer is **Not Specified**
+
+Additional diagnostic fields record:
+
+- `wrong_questions`
+- `wrong_predictions`
+- `ground_truth`
+- `unclear_count`
+- `not_answerable_count`
+
+These outputs are used for the statistical analysis and figures reported in the manuscript.
 ---

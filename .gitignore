@@ -1,4 +1,22 @@
+# --- secrets ---
+.env
+**/.env
 .venv/
 .vscode/
 __pycache__/
 *.pyc
+
+# --- local test artifacts ---
+dataset/_test_single_case.json
+dataset/policy_answer/
+dataset/policy_ret/
+
+# embedding / cache dirs created during experiments
+dataset/all-MiniLM-L6-v2_ST_header_test/
+dataset/text-embedding-3-small_headers_openai_test/
+dataset/text-embedding-3-small_policy_openai_test/
+
+# --- results (keep only README or selected summaries if desired) ---
+results/**/test/
+results/policy_retrieval/test/
+results/LLM_QnA/RAG/test/

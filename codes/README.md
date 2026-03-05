@@ -11,25 +11,37 @@ For policy retrieval task assessment, patient-policy match and QA task with docu
 
 ## 🔹 Entry Scripts (One per Task)
 
-| Task | Entry Script | Description | Outputs |
-|------|-------------|-------------|---------|
-| Payer name retrieval | `name_retrieval/experiment.py` | LLM-based payer identification experiments | `results/name_retrieval/` |
-| Policy document retrieval | `policy_retrieval/experiment.py` | Policy link retrieval + MD5 verification | `results/policy_retrieval/` |
-| Patient–policy matching (ST + header) | `patient_policy_match/header_execute.py` | SentenceTransformer embedding + summarized policy input | `results/patient_policy_match/` |
-| Patient–policy matching (ST + whole policy) | `patient_policy_match/whole_policy_execute.py` | SentenceTransformer embedding + full policy text | `results/patient_policy_match/` |
-| Patient–policy matching (OpenAI embedding) | `patient_policy_match/policy_openai.py` | OpenAI text-embedding-3-small + header/whole-policy input | `results/patient_policy_match/` |
-| Insurance QA Evaluation (OpenAI backbone) | `rag_qna/openai_embedding.py` | Executes structured insurance QA (Q0–Q8) under document-conditioning settings (Baseline (no document), all_correct, all_incorrect) using Text-embedding-3-small embedding based patient-policy matching (match/unmatch) results. This configuration is used in the manuscript. | `results/LLM_QnA/RAG/final/final_qna_results/open_ai` |
-| Insurance QA Evaluation (ST backbone) | `rag_qna/ST_embedding_qna.py` |Executes structured insurance QA (Q0–Q8) under document-conditioning settings (Baseline (no document), all_correct, all_incorrect) using SentenceTransformer embedding based patient-policy matching (match/unmatch) results.  | `results/LLM_QnA/RAG/final/final_qna_results/ST` |
+| Stage | Task | Entry Script | Description | Outputs |
+|-------|------|--------------|-------------|---------|
+| Stage 1 | Payer name retrieval | `name_retrieval/experiment.py` | LLM-based payer identification experiments | `results/name_retrieval/` |
+| Stage 2 | Policy document retrieval | `policy_retrieval/experiment.py` | Policy link retrieval + MD5 verification | `results/policy_retrieval/` |
+| Stage 3 | Patient–policy matching (ST + header) | `patient_policy_match/header_execute.py` | SentenceTransformer embedding + summarized policy |input | `results/patient_policy_match/full/ST/header` |
+| Stage 3 | Patient–policy matching (ST + whole policy) | `patient_policy_match/whole_policy_execute.py` | SentenceTransformer embedding + full policy text | `results/patient_policy_match/full/ST/policy` |
+| Stage 3 | Patient–policy matching (OpenAI embedding) | `patient_policy_match/policy_openai.py` | OpenAI text-embedding-3-small + header/whole-policy input | `results/patient_policy_match/full/openai` |
+| Stage 4 | Insurance QA Evaluation (OpenAI backbone) | `rag_qna/openai_embedding.py` | Executes structured insurance QA (Q0–Q8) under document-conditioning settings (Baseline (no document), all_correct, all_incorrect) using Text-embedding-3-small embedding based patient-policy matching (match/unmatch) results. This configuration is used in the manuscript. | `results/LLM_QnA/RAG/final/final_qna_results/open_ai` |
+| Stage 4 | Insurance QA Evaluation (ST backbone) | `rag_qna/ST_embedding_qna.py` |Executes structured insurance QA (Q0–Q8) under document-conditioning settings (Baseline (no document), all_correct, all_incorrect) using SentenceTransformer embedding based patient-policy matching (match/unmatch) results.  | `results/LLM_QnA/RAG/final/final_qna_results/ST` |
 
 ### QA Document Conditioning Strategy
 
 The QA module does not perform retrieval itself.  
-Instead, it consumes previously generated patient–policy matching results and evaluates downstream QA performance under controlled document-conditioning scenarios:
+Instead, it consumes previously generated patient–policy matching results and evaluates downstream QA performance under controlled document-conditioning scenarios: 
 
-- **Baseline**: No policy document provided (patient narrative only).
-- **Matched / Unmatched**: Documents selected according to matching outcomes from patient-policy matching.
-- **All Correct**: Every patient is paired with its ground-truth policy document.
-- **All Incorrect**: Every patient is paired with a high-similarity but incorrect policy document (excluding the ground truth).
+- **Baseline**  
+  Patient narrative only (no policy document).
+
+- **Matched**  
+  The policy document retrieved by the patient–policy matching pipeline
+  when the retrieved document matches the ground-truth policy.  
+
+- **Unmatched**  
+  The policy document retrieved by the patient–policy matching pipeline
+  when the retrieved document does not match the ground-truth policy.  
+
+- **All Correct**  
+  Oracle condition where the ground-truth policy document is always provided.  
+
+- **All Incorrect**  
+  Adversarial condition where a high-similarity but incorrect policy document is provided for every case (excluding the ground truth).  
 
 ---
 ## 🔹 Configuration (Policy Document Directory)
@@ -38,6 +50,27 @@ For tasks that require policy documents (Policy Retrieval Assessment, Patient–
 
 - The scripts expect a local directory containing the policy documents.
 - Please update the policy document directory path in the corresponding scripts before execution.
+
+## 🔹 SentenceTransformer Model Download
+
+The patient–policy matching module uses SentenceTransformer models
+(`all-MiniLM-L6-v2`) from Hugging Face.  
+
+⚠️ **Important**
+
+- During the **first execution**, the model files must be downloaded
+  from the Hugging Face Hub.  
+- Therefore, the following offline settings **must NOT be enabled** during the first run.  
+
+```python
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+os.environ["HF_HUB_OFFLINE"] = "1"
+```  
+Once the model has been downloaded and cached locally, the experiments
+can be executed in offline mode by enabling these variables if desired.
+
+This ensures that subsequent runs rely only on locally cached models
+without accessing external servers.
 
 > ⚠️ **Note**
 >
@@ -78,6 +111,8 @@ Experiment and Assessment
 (Please store policy documents first and set the directory.)
 
 Each file contains both experiment and assessment.  
+
+
 
 SentenceTransformer (header input):
 ```bash

@@ -22,8 +22,12 @@ def rerank_whole_policies(patient_info, candidates, llm_model,
     top_k = int(top_k) if top_k is not None else None
 
     # Preview candidate texts (truncate and clean newlines)
-    candidate_texts = [f"{c[0]}\n{str(c[2] or '').replace('\n',' ')}" for c in candidates]
-
+    # candidate_texts = [f"{c[0]}\n{str(c[2] or '').replace('\n',' ')}" for c in candidates]
+    candidate_texts = []
+    for name, score, text in candidates:
+        cleaned_text = str(text or "").replace("\n", " ")
+        candidate_texts.append(f"{name}\n{cleaned_text}")
+        
     # Build LLM prompt
     prompt = f"""You are an expert insurance policy analyst specializing in genetic testing coverage.
 

@@ -1,8 +1,8 @@
 import json
 import os
 import pandas as pd
-os.environ["TRANSFORMERS_OFFLINE"] = "1"
-os.environ["HF_HUB_OFFLINE"] = "1"
+# os.environ["TRANSFORMERS_OFFLINE"] = "1" # to ensure no online access for Hugging Face models, relying solely on local cache
+# os.environ["HF_HUB_OFFLINE"] = "1" # to ensure no online access for Hugging Face models, relying solely on local cache
 from dotenv import load_dotenv
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer

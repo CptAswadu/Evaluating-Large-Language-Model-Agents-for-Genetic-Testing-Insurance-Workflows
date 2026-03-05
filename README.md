@@ -12,7 +12,7 @@
 - Perplexity API key
 - SentenceTransformer model (all-MiniLM-L6-v2)
 - OpenAI text-embedding-3-small
-- Publicly available insurance policy documents (see below section)
+- Publicly available insurance policy documents (see below section)  
 
 ⚠️ Due to policy version updates over time, retrieval results may differ slightly if policies have been modified after the study period.
 ---
